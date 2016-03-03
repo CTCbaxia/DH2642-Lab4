@@ -345,21 +345,21 @@ var DinnerModel = function() {
 	//if you don't pass any filter all the dishes will be returned
 	this.getAllDishes = function (type,filter) {
 		th.dishes = [];
-		// var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
+		 var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
 		// var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
         // var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
-		 var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
+		// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
 		// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
 		// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
 		// var apiKey = "H9n1zb6es492fj87OxDtZM9s5sb29rW3";
          var url = "";
 		if (type == "all") {
-			if (filter == null) {
-                url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=10&any_kw=";
+			if (filter == null || filter == "") {
+                url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=10";
 			}else{
 				url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=10&any_kw=" + filter;
 			}
-		} else if (filter == null) {
+		} else if (filter == null || filter == "") {
 			url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=5&any_kw=" + type;
 		} else {
 			url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=5&any_kw=" + type + "&any_kw=" + filter;

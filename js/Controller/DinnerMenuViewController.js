@@ -9,7 +9,7 @@ var DinnerMenuViewController = function(view, model){
   });
 
   $("#confirmDinner").on("click",function(){
-    console.log("confirm confirmDinner");
+    //console.log("confirm confirmDinner");
     model.notify("confirmDinner");
   });
 

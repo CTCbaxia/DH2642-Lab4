@@ -2,6 +2,8 @@ var ListDishesViewController = function(view, model){
     view.selectType.change(function(){
   	var dishType = view.selectType.val();
   	model.setSelectedDish(dishType);
+    var filter = view.keyWords.val();
+    model.setFilter(filter);
 
     $(".selectDish").on("click",function(){
         var value = [];
@@ -17,6 +19,8 @@ var ListDishesViewController = function(view, model){
   });
    
   view.search.click(function(){
+    var dishType = view.selectType.val();
+    model.setSelectedDish(dishType);
   	var filter = view.keyWords.val();
   	model.setFilter(filter);
   });
@@ -31,7 +35,7 @@ var ListDishesViewController = function(view, model){
     $(".backToMenu").attr('id',id);//add id to backToMenu button, so if go back without adding, the dish won't be showed on menu
     $(this).attr("keyDetail",1);
     
-    console.log($(this).attr("keyDetail"));
+    //console.log($(this).attr("keyDetail"));
   });
   
   //unused 

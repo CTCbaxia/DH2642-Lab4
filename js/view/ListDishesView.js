@@ -40,7 +40,7 @@ var ListDishesView = function (container, model){
 							   "<div class=\"description\"> " + dish.Description + "</div>" +
 					      "</div>";
  	
- 	    	this.listAllDishes.html(alldishesHtml);
+ 	    	//this.listAllDishes.html(alldishesHtml);
 			
  	    };
 

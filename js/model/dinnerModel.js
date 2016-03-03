@@ -343,9 +343,7 @@ var DinnerModel = function() {
 	//function that returns all dishes of specific type (i.e. "starter", "main dish" or "dessert")
 	//you can use the filter argument to filter out the dish by name or ingredient (use for search)
 	//if you don't pass any filter all the dishes will be returned
-<<<<<<< HEAD
 
-=======
 	this.getAllDishes = function (type,filter) {
 		th.dishes = [];
 		// var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
@@ -393,7 +391,7 @@ var DinnerModel = function() {
 					}
          		});	
     }
->>>>>>> master
+
 
 	//function that returns a dish of specific ID
 	this.getDish = function (id) {

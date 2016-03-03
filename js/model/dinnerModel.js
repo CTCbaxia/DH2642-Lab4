@@ -12,7 +12,7 @@ var DinnerModel = function() {
     var dishID;
     this.listeners = [];
     this.dish = [];
- 
+
     // add an attach function
     // add an notify function
     // if the controller model make some changes, for each func that call of notify
@@ -22,8 +22,7 @@ var DinnerModel = function() {
     	this.listeners.push(listener);
     }
 
-    this.notifyData = function(dish){
-    	var args = "dish";
+    this.notifyData = function(dish,args){
         for(key in this.listeners){
 			this.listeners[key].update(args);
 			this.dish = dish;
@@ -45,7 +44,7 @@ var DinnerModel = function() {
 			numberOfGuests = num;
 		};
 		//to check where is it
-		console.log($(".selectDish").attr("keyDetail"));
+		//console.log($(".selectDish").attr("keyDetail"));
 		this.notify("people");
 	    
 	}
@@ -61,11 +60,11 @@ var DinnerModel = function() {
 	this.setSelectedDish = function(type) {
 		//TODO Lab 2
 		if ( type == 'starter') {
-			dishType = 'starter';
+			dishType = 'appetizer';
 		}else if ( type == 'main dish') {
-			dishType = 'main dish';
+			dishType = 'main';
 		}else if ( type == 'dessert') {
-			dishType = 'dessert';
+			dishType = 'desserts';
 		}else if ( type == 'all') {
 			dishType = 'all';
 		};
@@ -344,7 +343,57 @@ var DinnerModel = function() {
 	//function that returns all dishes of specific type (i.e. "starter", "main dish" or "dessert")
 	//you can use the filter argument to filter out the dish by name or ingredient (use for search)
 	//if you don't pass any filter all the dishes will be returned
+<<<<<<< HEAD
 
+=======
+	this.getAllDishes = function (type,filter) {
+		th.dishes = [];
+		// var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
+		// var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
+        // var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
+		 var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
+		// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
+		// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
+		// var apiKey = "H9n1zb6es492fj87OxDtZM9s5sb29rW3";
+         var url = "";
+		if (type == "all") {
+			if (filter == null) {
+                url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=10&any_kw=";
+			}else{
+				url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=10&any_kw=" + filter;
+			}
+		} else if (filter == null) {
+			url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=5&any_kw=" + type;
+		} else {
+			url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=5&any_kw=" + type + "&any_kw=" + filter;
+		};
+		
+		$.ajax({
+			         type: "GET",
+			         dataType: 'json',
+			         cache: false,
+			         url: url,
+			         success: function (data) {
+			            rpp = data.Results;
+			            var recipeID;
+			            for (var i = 0; i < rpp.length; i++) {
+			            	recipeID = rpp[i].RecipeID;
+			            	var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key=" + apiKey;
+							$.ajax({
+					         type: "GET",
+					         dataType: 'json',
+					         cache: false,
+					         url: url,
+					         success: function (dish) {
+					            //console.log(data.Results[0].RecipeID);
+					            th.notifyData(dish,"chgType");
+							}
+		         		});
+			           };
+					}
+         		});	
+    }
+>>>>>>> master
 
 	//function that returns a dish of specific ID
 	this.getDish = function (id) {
@@ -361,13 +410,13 @@ var DinnerModel = function() {
 		
 		// var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
 		// var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
-  //       var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4":
+        // var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
 		// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
-		// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
+		 var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
 		// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
-		var apiKey = "H9n1zb6es492fj87OxDtZM9s5sb29rW3";
+		// var apiKey = "H9n1zb6es492fj87OxDtZM9s5sb29rW3";
 		
-		var url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=50";
+		var url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=10";
 	
 		$.ajax({
 			         type: "GET",
@@ -378,7 +427,6 @@ var DinnerModel = function() {
 			            //console.log(data.Results[0].RecipeID);
 			            rpp = data.Results;
 			            var recipeID;
-			            var dishes = [];
 			            for (var i = 0; i < rpp.length; i++) {
 			            	recipeID = rpp[i].RecipeID;
 			            	var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key=" + apiKey;
@@ -388,9 +436,7 @@ var DinnerModel = function() {
 					         cache: false,
 					         url: url,
 					         success: function (dish) {
-					            //console.log(data.Results[0].RecipeID);
-					            //console.log(dish);
-					            th.notifyData(dish);
+					            th.notifyData(dish,"dish");
 							}
 		         		});
 			           };

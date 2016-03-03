@@ -1,7 +1,9 @@
 var SelectDishView = function (container, model){
 
 	model.attach(this);
+
 	this.update = function(args){
+
 		if (args == "dishDetail"|| args == "people") {
 			this.numberOfPeople = container.find(".numberOfPeople");
 			var guestNum = model.getNumberOfGuests();
@@ -9,11 +11,10 @@ var SelectDishView = function (container, model){
 			
 			var dishID = model.getDishID();	
 			var totalPrice = model.getTotalDishPrice(dishID);
-		
-		
+
    			//Get the dish Name
     		this.dishname = container.find("#dishName");
-    		var dishName = model.getDishName(dishID);
+			var dishName = model.getDishName(dishID);
             this.dishname.html(dishName);
 
     		//Get the dish img

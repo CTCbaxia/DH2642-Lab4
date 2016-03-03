@@ -11,7 +11,7 @@ var DinnerModel = function() {
     var filter = '';
     var dishID;
     this.listeners = [];
-
+ 
     // add an attach function
     // add an notify function
     // if the controller model make some changes, for each func that call of notify
@@ -28,6 +28,7 @@ var DinnerModel = function() {
     		//console.log(this.listeners[i]);
        	};
        	*/
+       	console.log(args);
         for(key in this.listeners){
 			this.listeners[key].update(args);
 		}
@@ -393,6 +394,28 @@ var DinnerModel = function() {
 			}
 		}
 	}
+
+	var th = this;
+
+		this.getRecipeJson = function () {
+		
+		var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
+			//var recipeID = 196149;
+			var url = "http://api.bigoven.com/recipes" + "?api_key="+apiKey + "&pg=1&rpp=50";
+			$.ajax({
+			         type: "GET",
+			         dataType: 'json',
+			         cache: false,
+			         url: url,
+			         success: function (data) {
+			            console.log(data.Results[0].RecipeID);
+			            //console.log
+			            //getDish();
+			            console.log(this);
+			            th.notify(data);
+			}
+         });
+       }
   
 	// the dishes variable contains an array of all the 
 	// dishes in the database. each has id, name, type,

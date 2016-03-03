@@ -341,28 +341,45 @@ var DinnerModel = function() {
 	//function that returns all dishes of specific type (i.e. "starter", "main dish" or "dessert")
 	//you can use the filter argument to filter out the dish by name or ingredient (use for search)
 	//if you don't pass any filter all the dishes will be returned
-	this.getAllDishes = function (type,filter) {
-		//console.log("filter");
-	if (type == 'all') {
-		//console.log(dishes);
-        return dishes;
-	}else{
-		return $(dishes).filter(function(index,dish) {
-		var found = true;
-		if(filter){
-			found = false;
-			$.each(dish.ingredients,function(index,ingredient) {
-				if(ingredient.name.indexOf(filter)!=-1) {
-					found = true;
-				}
-			});
-			if(dish.name.indexOf(filter) != -1)
-			{
-				found = true;
-			}
-		}
-	  	return dish.type == type && found;
-	  });
+	// this.getAllDishes = function (type,filter) {
+	// 	//console.log("filter");
+	// if (type == 'all') {
+	// 	//console.log(dishes);
+ //        return dishes;
+	// }else{
+	// 	return $(dishes).filter(function(index,dish) {
+	// 	var found = true;
+	// 	if(filter){
+	// 		found = false;
+	// 		$.each(dish.ingredients,function(index,ingredient) {
+	// 			if(ingredient.name.indexOf(filter)!=-1) {
+	// 				found = true;
+	// 			}
+	// 		});
+	// 		if(dish.name.indexOf(filter) != -1)
+	// 		{
+	// 			found = true;
+	// 		}
+	// 	}
+	//   	return dish.type == type && found;
+	//   });
+	// }
+	this.getAllDishesTest = function(){
+		var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
+		var recipeID = 167511;
+		var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key="+apiKey;
+		$.ajax({
+         type: "GET",
+         dataType: 'json',
+         cache: false,
+         url: url,
+         success: function (data) {
+            alert('success');
+            //console.log(data);
+            }
+         });
+       }
+        
 	}
 
 	/*

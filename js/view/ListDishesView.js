@@ -1,7 +1,7 @@
 var ListDishesView = function (container, model){
 	// is a loop, print all dishes in that category
 	model.attach(this);
-	model.getRecipeJson();
+	model.getAllDishes("all");
     this.listAllDishes = container.find("#listAllDishes");
     this.selectType = container.find("#selection");
     this.search = container.find("#search");
@@ -11,8 +11,10 @@ var ListDishesView = function (container, model){
 	var dish = [];
 	
 	this.update = function(args){
+
 		if (args == "dish") {
 			 dish = model.dish;
+
 			 alldishesHtml +=  "<div class=\"col-xs-3 dishbox\">" + 
 		                       "<a href=\'#\' class=\'selectDish\' id=\'"+ dish.RecipeID +"\'>" +
 		                       "<div class=\" dish\" id=\'dishID\' > " +
@@ -28,22 +30,8 @@ var ListDishesView = function (container, model){
         	var filter = model.getFilter();
         	var dishes = model.getAllDishes(dishType,filter);
      
- 	    } else if (args == "chgType") {
- 	    	dish = model.dish; //Get each dish
-
- 	    		alldishesHtml +=  "<div class=\"col-xs-3 dishbox\">" + 
-		                       "<a href=\'#\' class=\'selectDish\' id=\'"+ dish.RecipeID +"\'>" +
-		                       "<div class=\" dish\" id=\'dishID\' > " +
-							      "<center>" + "<img src=\'" + dish.ImageURL + "\'></center> " +
-							      " <div class=\"dishname\">" + dish.Title + "</div>" +
-							   "</div></a>" + 
-							   "<div class=\"description\"> " + dish.Description + "</div>" +
-					      "</div>";
- 	
- 	    	//this.listAllDishes.html(alldishesHtml);
-			
  	    };
-
+ 	   
 		this.listAllDishes.html(alldishesHtml);
    
     }

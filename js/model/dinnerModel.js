@@ -343,6 +343,7 @@ var DinnerModel = function() {
 	//function that returns all dishes of specific type (i.e. "starter", "main dish" or "dessert")
 	//you can use the filter argument to filter out the dish by name or ingredient (use for search)
 	//if you don't pass any filter all the dishes will be returned
+	var th = this;
 	this.getAllDishes = function (type,filter) {
 		th.dishes = [];
 		 var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
@@ -383,7 +384,7 @@ var DinnerModel = function() {
 					         url: url,
 					         success: function (dish) {
 					            //console.log(data.Results[0].RecipeID);
-					            th.notifyData(dish,"chgType");
+					            th.notifyData(dish,"dish");
 							}
 		         		});
 			           };
@@ -400,46 +401,7 @@ var DinnerModel = function() {
 		}
 	}
 
-	var th = this;
     
-    this.getRecipeJson = function () {
-		
-		// var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
-		// var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
-        // var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
-		// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
-		 var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
-		// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
-		// var apiKey = "H9n1zb6es492fj87OxDtZM9s5sb29rW3";
-		
-		var url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=10";
-	
-		$.ajax({
-			         type: "GET",
-			         dataType: 'json',
-			         cache: false,
-			         url: url,
-			         success: function (data) {
-			            //console.log(data.Results[0].RecipeID);
-			            rpp = data.Results;
-			            var recipeID;
-			            for (var i = 0; i < rpp.length; i++) {
-			            	recipeID = rpp[i].RecipeID;
-			            	var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key=" + apiKey;
-							$.ajax({
-					         type: "GET",
-					         dataType: 'json',
-					         cache: false,
-					         url: url,
-					         success: function (dish) {
-					            th.notifyData(dish,"dish");
-							}
-		         		});
-			           };
-					}
-         		});	
-       	}
-  
 	// the dishes variable contains an array of all the 
 	// dishes in the database. each has id, name, type,
 	// image (name of the image file), description and

@@ -11,7 +11,8 @@ var DinnerModel = function() {
     var filter = '';
     var dishID;
     this.listeners = [];
-
+    this.dish = [];
+ 
     // add an attach function
     // add an notify function
     // if the controller model make some changes, for each func that call of notify
@@ -21,13 +22,15 @@ var DinnerModel = function() {
     	this.listeners.push(listener);
     }
 
+    this.notifyData = function(dish){
+    	var args = "dish";
+        for(key in this.listeners){
+			this.listeners[key].update(args);
+			this.dish = dish;
+		}
+    }
+
     this.notify = function(args){
-    	/*
-    	for (var i = 0; i < this.listeners.length; i++) {
-    		this.listeners[i].update(args);
-    		//console.log(this.listeners[i]);
-       	};
-       	*/
         for(key in this.listeners){
 			this.listeners[key].update(args);
 		}
@@ -363,27 +366,8 @@ var DinnerModel = function() {
 		}
 	  	return dish.type == type && found;
 	  });
-	}
-
-	/*
-	  return $(dishes).filter(function(index,dish) {
-		var found = true;
-		if(filter){
-			found = false;
-			$.each(dish.ingredients,function(index,ingredient) {
-				if(ingredient.name.indexOf(filter)!=-1) {
-					found = true;
-				}
-			});
-			if(dish.name.indexOf(filter) != -1)
-			{
-				found = true;
-			}
-		}
-	  	return dish.type == type && found;
-	  });
-	  */	
-	}
+	}	
+}
 
 	//function that returns a dish of specific ID
 	this.getDish = function (id) {
@@ -393,6 +377,49 @@ var DinnerModel = function() {
 			}
 		}
 	}
+
+	var th = this;
+    
+    this.getRecipeJson = function () {
+		
+		// var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
+		// var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
+  //       var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4":
+		// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
+		// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
+		// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
+		var apiKey = "H9n1zb6es492fj87OxDtZM9s5sb29rW3";
+		
+		var url = "http://api.bigoven.com/recipes" + "?api_key=" + apiKey + "&pg=1&rpp=50";
+	
+		$.ajax({
+			         type: "GET",
+			         dataType: 'json',
+			         cache: false,
+			         url: url,
+			         success: function (data) {
+			            //console.log(data.Results[0].RecipeID);
+			            rpp = data.Results;
+			            var recipeID;
+			            var dishes = [];
+			            for (var i = 0; i < rpp.length; i++) {
+			            	recipeID = rpp[i].RecipeID;
+			            	var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key=" + apiKey;
+							$.ajax({
+					         type: "GET",
+					         dataType: 'json',
+					         cache: false,
+					         url: url,
+					         success: function (dish) {
+					            //console.log(data.Results[0].RecipeID);
+					            //console.log(dish);
+					            th.notifyData(dish);
+							}
+		         		});
+			           };
+					}
+         		});	
+       	}
   
 	// the dishes variable contains an array of all the 
 	// dishes in the database. each has id, name, type,

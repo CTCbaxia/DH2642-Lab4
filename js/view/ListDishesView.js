@@ -34,7 +34,7 @@ var ListDishesView = function (container, model){
         	var dishes = model.getAllDishes(dishType,filter);
      
  	    };
- 	   
+
 		this.listAllDishes.html(alldishesHtml);
 
     }

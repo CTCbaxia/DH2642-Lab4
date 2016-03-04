@@ -9,11 +9,14 @@ var ListDishesView = function (container, model){
 
 	var alldishesHtml = "";
 	var dish = [];
+	var dishes = [];
 	
 	this.update = function(args){
 
 		if (args == "dish") {
+
 			 dish = model.dish;
+             dishes = model.dishes;
 
 			 alldishesHtml +=  "<div class=\"col-xs-3 dishbox\">" + 
 		                       "<div class=\'selectDish\' id=\'"+ dish.RecipeID +"\'>" +
@@ -33,7 +36,7 @@ var ListDishesView = function (container, model){
  	    };
  	   
 		this.listAllDishes.html(alldishesHtml);
-   
+
     }
 }
 

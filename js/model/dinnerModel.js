@@ -12,6 +12,7 @@ var DinnerModel = function() {
     var dishID;
     this.listeners = [];
     this.dish = [];
+    this.dishes = [];
 
     // add an attach function
     // add an notify function
@@ -22,12 +23,12 @@ var DinnerModel = function() {
     	this.listeners.push(listener);
     }
 
-    this.notifyData = function(dish,args){
-        for(key in this.listeners){
-			this.listeners[key].update(args);
-			this.dish = dish;
-		}
-    }
+  //   this.notifyData = function(dish,args){
+  //       for(key in this.listeners){
+		// 	this.listeners[key].update(args);
+		// 	this.dish = dish;
+		// }
+  //   }
 
     this.notify = function(args){
         for(key in this.listeners){
@@ -346,12 +347,13 @@ var DinnerModel = function() {
 	var th = this;
 	this.getAllDishes = function (type,filter) {
 		th.dishes = [];
-		 // var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
-		var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
+
+		 //var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
+		// var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
         // var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
 		// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
 		// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
-		// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
+		 var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
 		// var apiKey = "H9n1zb6es492fj87OxDtZM9s5sb29rW3";
          var url = "";
 		if (type == "all") {
@@ -384,10 +386,14 @@ var DinnerModel = function() {
 					         url: url,
 					         success: function (dish) {
 					            //console.log(data.Results[0].RecipeID);
-					            th.notifyData(dish,"dish");
+					            //th.notifyData(dish,"dish");
+					            th.dish = dish; //Pass the dish to model.dish
+					            th.dishes.push(dish);
+					            th.notify("dish");
 							}
 		         		});
 			           };
+			           console.log(dishes);
 					}
          		});	
     }

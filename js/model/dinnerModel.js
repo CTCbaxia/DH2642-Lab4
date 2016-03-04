@@ -78,7 +78,7 @@ var DinnerModel = function() {
 
 	this.setDishID = function(id){
         dishID = id;
-        //console.log("set id "+ dishID);
+        console.log("set id "+ dishID);
         this.notify("dishDetail");
 
 	}
@@ -346,8 +346,8 @@ var DinnerModel = function() {
 	var th = this;
 	this.getAllDishes = function (type,filter) {
 		th.dishes = [];
-		 var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
-		// var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
+		 // var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
+		var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
         // var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
 		// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
 		// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";

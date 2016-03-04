@@ -1,19 +1,31 @@
 var SelectDishView = function (container, model){
 
 	model.attach(this);
+	// var dish = [];
+	// var dishes = [];
+
 	this.update = function(args){
 		if (args == "dishDetail"|| args == "people") {
 			this.numberOfPeople = container.find(".numberOfPeople");
 			var guestNum = model.getNumberOfGuests();
 			this.numberOfPeople.html(guestNum);
+
+
 			
-			var dishID = model.getDishID();	
-			var totalPrice = model.getTotalDishPrice(dishID);
-		
-		
+			// var dishID = dish.RecipeID;	
+			// console.log(dishID);//ok
+			// var totalPrice = model.getTotalDishPrice(dishID); need to be fixed
+			var dishID = $(".selectDish").attr('id');
+
+			console.log(dishID);	
+
+
    			//Get the dish Name
     		this.dishname = container.find("#dishName");
     		var dishName = model.getDishName(dishID);
+    		var dishName2 = dish.Title;
+    		console.log(dishName);
+     		console.log(dishName2);   		
             this.dishname.html(dishName);
 
     		//Get the dish img

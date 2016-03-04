@@ -28,9 +28,7 @@ var ListDishesViewController = function(view, model){
   	model.setFilter(filter);
 
   });
-  $(".selectDish").click(function(){
-    console.log("hah")
-  })
+
 
   // $(".selectDish").on("click",function(){
   //   console.log("to detail");

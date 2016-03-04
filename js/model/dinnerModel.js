@@ -357,7 +357,6 @@ var DinnerModel = function() {
 	this.getAllDishes = function (type,filter) {
 		th.dishes = [];
 
-
          var url = "";
 		if (type == "all") {
 			if (filter == null || filter == "") {
@@ -400,7 +399,6 @@ var DinnerModel = function() {
 							}
 		         		});
 			           };
-
 
 					}
          		});	

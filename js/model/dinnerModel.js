@@ -392,7 +392,7 @@ var DinnerModel = function() {
 							}
 		         		});
 			           };
-			           console.log(dishes);
+			           //console.log(dishes);
 					}
          		});	
     }

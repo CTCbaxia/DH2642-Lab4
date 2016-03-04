@@ -22,12 +22,12 @@ var DinnerModel = function() {
     	this.listeners.push(listener);
     }
 
-    this.notifyData = function(dish,args){
-        for(key in this.listeners){
-			this.listeners[key].update(args);
-			this.dish = dish;
-		}
-    }
+  //   this.notifyData = function(dish,args){
+  //       for(key in this.listeners){
+		// 	this.listeners[key].update(args);
+		// 	this.dish = dish;
+		// }
+  //   }
 
     this.notify = function(args){
         for(key in this.listeners){
@@ -384,7 +384,9 @@ var DinnerModel = function() {
 					         url: url,
 					         success: function (dish) {
 					            //console.log(data.Results[0].RecipeID);
-					            th.notifyData(dish,"dish");
+					            //th.notifyData(dish,"dish");
+					            th.dish = dish; //Pass the dish to model.dish
+					            th.notify("dish");
 							}
 		         		});
 			           };

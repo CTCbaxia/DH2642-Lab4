@@ -17,7 +17,6 @@ var ListDishesView = function (container, model){
 
 			dish = model.dish;
 			dishes = model.dishes;
-			// console.log(dishes);
 
 			 alldishesHtml +=  "<div class=\"col-xs-3 dishbox\">" + 
 		                       "<div class=\'selectDish\' id=\'"+ dish.RecipeID +"\'>" +
@@ -44,11 +43,11 @@ var ListDishesView = function (container, model){
 
 		//controller for selectDishView
 	 	$(".selectDish").on("click",function(){
-	    // console.log("to detail");
-	    var value = [];
-	    var selectClass = $(".selectDish");
+
+	    // var value = [];
+	    // var selectClass = $(".selectDish");
 	    var id = $(this).attr('id');
-		console.log("ListDishesView" + id);	//right id
+		// console.log("ListDishesView" + id);	//right id
 		model.getDish(id);
 	    model.setDishID(id);
 	    // model.addDishToPendingMenu(id);//add pending to dinnerMenuView
@@ -56,7 +55,7 @@ var ListDishesView = function (container, model){
 	    $(".backToMenu").attr('id',id);//add id to backToMenu button, so if go back without adding, the dish won't be showed on menu
 	    $(this).attr("keyDetail",1);
 		
-		//show detial page
+		//show detial page, moved from index.html
 	    $("#startPage").hide();
         $("#menuPage").show();
 	    $("#menuPage #dishMenu").hide();

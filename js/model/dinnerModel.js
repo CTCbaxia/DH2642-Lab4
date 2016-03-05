@@ -76,10 +76,10 @@ var DinnerModel = function() {
 	this.getSelectedDish = function(){
 		return dishType;
 	}
-
+	//set dish id when clicking specific dish - lab4
 	this.setDishID = function(id){
         dishID = id;
-        console.log("setDish id "+ dishID);
+        // console.log("setDish id "+ dishID);
         // this.notify("dishDetail");
 	}
 
@@ -98,15 +98,18 @@ var DinnerModel = function() {
         return filter;
 	}
 
-	//Returns all the dishes on the menu.
+	//Returns all the dishes on the menu.- lab4
 	this.getFullMenu = function() {
 		//TODO Lab 2
 		var dishesOnMenu = [];
 		for (var i = 0; i < menu.length; i++) {
-			dishesOnMenu.push(this.getDish(menu[i]));
+			dishesOnMenu.push(this.getLocalDish(menu[i]));
+
 		};
+		// console.log(dishesOnMenu);
         return dishesOnMenu;
 	}
+
 	this.getFullPendingMenu = function() {
 		//TODO Lab 2
 		var dishesOnPendingMenu = [];
@@ -114,26 +117,24 @@ var DinnerModel = function() {
 			dishesOnPendingMenu.push(this.getDish(pendingmenu[i]));
 		};
         return dishesOnPendingMenu;
-        console.log(menu);
-        console.log(pendingmenu);
+
 	}
 
-
+	//no use in lab4
     this.getDishName = function(id){
     	var thisDish;
-    	// console.log("getDishName"+id)
     	thisDish = this.getDish(id);
     	var dishName = thisDish.name;
     	return dishName;
     }
-
+    //no use in lab4
     this.getDishImg = function(id){
     	var thisDish;
     	thisDish = this.getDish(id);
     	var dishImg = thisDish.image;
     	return dishImg;
     }
-
+    //no use in lab4
     this.getDishInfo = function(id){
     	var thisDish;
     	thisDish = this.getDish(id);
@@ -141,6 +142,7 @@ var DinnerModel = function() {
     	return dishInfo;
     }
 
+    //no use in lab4 
 	this.getDishIngredients = function(id) {
 		var thisDish;
 		thisDish = this.getDish(id);
@@ -157,8 +159,9 @@ var DinnerModel = function() {
 		return ingredients;
 	}
 
+	//lab4
 	this.getTotalDishPrice = function(id){
-		var dish = this.dish;
+		var dish = this.getLocalDish(id);
 		var guestNum = this.getNumberOfGuests();
 		var dishIngre = dish.Ingredients;
 		var totalPrice = 0;
@@ -169,7 +172,7 @@ var DinnerModel = function() {
 		return totalPrice;
 	}
 
-	//Returns all ingredients for all the dishes on the menu.
+	//Returns all ingredients for all the dishes on the menu. - lab 4
 	this.getAllIngredients = function() {
 		//TODO Lab 2
 		var dish;
@@ -177,27 +180,30 @@ var DinnerModel = function() {
 		var allIngreOnMenu = [];
         
 		for (var i = 0; i < menu.length; i++) {
-			dish = this.getDish(menu[i]);
-			ingredients = dish.ingredients;
+			dish = this.getLocalDish(menu[i]);
+			ingredients = dish.Ingredients;
 			for (var j = 0; j < ingredients.length; j++) {
 				allIngreOnMenu.push(ingredients[j]);
 			};
 		}; 
+		// console.log(allIngreOnMenu+"getAllIngredients");
         return allIngreOnMenu;
+
 	}
 
-	//Returns the total price of the menu (all the ingredients multiplied by number of guests).
+	//Returns the total price of the menu (all the ingredients multiplied by number of guests). - lab 4
 	this.getTotalMenuPrice = function() {
 		//TODO Lab 2
-        var dish;
+        // var dish;
         var allIngredients = this.getAllIngredients();
         var guestNum = this.getNumberOfGuests();
         var totalPrice = 0;
        
         //The loop to get all the price and pass the value of the price
         for (var i = 0; i < allIngredients.length; i++) {
-        	totalPrice += (allIngredients[i].price * guestNum);
+        	totalPrice += (allIngredients[i].Quantity * guestNum);
         };       
+		totalPrice = parseFloat(totalPrice.toFixed(2));
         return totalPrice;
 	}
 
@@ -216,20 +222,25 @@ var DinnerModel = function() {
 	//it is removed from the menu and the new one added.
 	this.addDishToMenu = function(id) {
 		//TODO Lab 2 
-		var selectDish = this.getDish(id);//get all the info of the dish
-		var selectDishType = selectDish.type;
+		var dish = this.dish;
+		// var selectDish = this.getDish(id);//get all the info of the dish
+		var selectDishType = dish.Category;
+		// console.log("showing all the dishes got:     "+th.dishes);
+		console.log("before if:     "+menu);
 		var theSameType = -1;
-		// console.log(selectDish);
-		
+
 		if (menu.length == 0) {
 			//if there is nothing in the menu, add directly
 			menu.push(id); 
-			// console.log(menu);
+			console.log("if:     "+menu);
 		} else{
+
 			for (var i = 0; i< menu.length; i++) {
 			//if there is the same type in the menu, assign the value of the theSameType with the array index
-				var dishInMenu = this.getDish(menu[i]);
-				var dishInMenuType = dishInMenu.type;
+				console.log("menu.length>0:     "+ menu[i]);
+				var dishInMenu = this.getLocalDish(menu[i]);//此时getDish的值已经是新值了
+				console.log("the first dish in menu:     "+ dishInMenu);
+				var dishInMenuType = dishInMenu.Category;
 				if (dishInMenuType == selectDishType) {
 					theSameType = i				
 				};
@@ -239,10 +250,25 @@ var DinnerModel = function() {
 			}else{
 				// console.log(theSameType);
 				menu.push(id); 
+				console.log("addmenu:     "+menu);//add to menu ok
 			};
 		};
 		this.notify("addMenu");
 	}
+
+	this.getLocalDish = function(id){
+		var localDishes = [];
+		localDishes = this.dishes;
+
+	  	for(key in localDishes){
+			if(localDishes[key].RecipeID == id) {
+				// console.log("getLocalDish:    "+localDishes[key].RecipeID);
+				return localDishes[key];
+			}
+		}
+	}
+
+
 	//add pending to the menu
 	this.addDishToPendingMenu = function(id) {
 		//TODO Lab 2 
@@ -345,8 +371,8 @@ var DinnerModel = function() {
 	//if you don't pass any filter all the dishes will be returned
 	var th = this;
 	// var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
-	// var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
-     var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
+	 var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
+     //var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
 	// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
 	// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
 	// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
@@ -393,10 +419,12 @@ var DinnerModel = function() {
 					            th.notify("dish");
 			          			// console.log(dish);
 			          			// console.log("dishes showed");
+			          			
 							}
 		         		});
 			           };
 
+			         
 					}
          		});	
     }
@@ -411,9 +439,9 @@ var DinnerModel = function() {
 	// }
 
 	this.getDish = function(id){
-		console.log("getDish" + id);	
 		var recipeID = id;
-		var thisDish = [];
+		console.log(id);
+		// var thisDish = [];
 		var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key="+apiKey;
 		$.ajax({
          type: "GET",
@@ -424,11 +452,11 @@ var DinnerModel = function() {
  
             // console.log(data);
             th.dish = data;//undefined
-            console.log("dish got--" + th.dish);
+
             th.notify("select");
             }
          });
-		// return thisDish;
+		return th.dish;
 
     }
 

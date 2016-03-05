@@ -48,15 +48,23 @@ var ListDishesView = function (container, model){
 	    var value = [];
 	    var selectClass = $(".selectDish");
 	    var id = $(this).attr('id');
-
+		console.log("ListDishesView" + id);	//right id
+		model.getDish(id);
 	    model.setDishID(id);
-	    model.addDishToPendingMenu(id);//add pending to dinnerMenuView
+	    // model.addDishToPendingMenu(id);//add pending to dinnerMenuView
 	    $(".confirm").attr('id',id);
 	    $(".backToMenu").attr('id',id);//add id to backToMenu button, so if go back without adding, the dish won't be showed on menu
 	    $(this).attr("keyDetail",1);
-
+		
+		//show detial page
+	    $("#startPage").hide();
+        $("#menuPage").show();
+	    $("#menuPage #dishMenu").hide();
+	    $("#menuPage #dishView").show();
+		$("#overviewPage").hide();
+		$("#printPage").hide();
 	    
-	    console.log($(this).attr("keyDetail"));
+	    // console.log($(this).attr("keyDetail"));
 	  });
     }
 

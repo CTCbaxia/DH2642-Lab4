@@ -15,9 +15,20 @@ var ListDishesView = function (container, model){
 
 		if (args == "dish") {
 
-			 dish = model.dish;
-             dishes = model.dishes;
-
+			dish = model.dish;
+         //    dishes = model.dishes;
+         //    //console.log(model.dishes);
+         //    for (var i = 0; i < dishes.length; i++) {
+         //    	alldishesHtml +=  "<div class=\"col-xs-3 dishbox\">" + 
+		       //                 "<a href=\'#\' class=\'selectDish\' id=\'"+ dishes[i].RecipeID +"\'>" +
+		       //                 "<div class=\" dish\" id=\'dishID\' > " +
+							  //     "<center>" + "<img src=\'" + dishes[i].ImageURL + "\'></center> " +
+							  //     " <div class=\"dishname\">" + dishes[i].Title + "</div>" +
+							  //  "</div></a>" + 
+							  //  "<div class=\"description\"> " + dishes[i].Description + "</div>" +
+					    //   "</div>";
+	        // };
+            
 			 alldishesHtml +=  "<div class=\"col-xs-3 dishbox\">" + 
 		                       "<a href=\'#\' class=\'selectDish\' id=\'"+ dish.RecipeID +"\'>" +
 		                       "<div class=\" dish\" id=\'dishID\' > " +

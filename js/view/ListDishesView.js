@@ -10,34 +10,27 @@ var ListDishesView = function (container, model){
 	var alldishesHtml = "";
 	var dish = [];
 	var dishes = [];
-	
+
 	this.update = function(args){
 
 		if (args == "dish") {
 
 			dish = model.dish;
-         //    dishes = model.dishes;
-         //    //console.log(model.dishes);
-         //    for (var i = 0; i < dishes.length; i++) {
-         //    	alldishesHtml +=  "<div class=\"col-xs-3 dishbox\">" + 
-		       //                 "<a href=\'#\' class=\'selectDish\' id=\'"+ dishes[i].RecipeID +"\'>" +
-		       //                 "<div class=\" dish\" id=\'dishID\' > " +
-							  //     "<center>" + "<img src=\'" + dishes[i].ImageURL + "\'></center> " +
-							  //     " <div class=\"dishname\">" + dishes[i].Title + "</div>" +
-							  //  "</div></a>" + 
-							  //  "<div class=\"description\"> " + dishes[i].Description + "</div>" +
-					    //   "</div>";
-	        // };
-            
+
+			dishes = model.dishes;
+
 			 alldishesHtml +=  "<div class=\"col-xs-3 dishbox\">" + 
-		                       "<a href=\'#\' class=\'selectDish\' id=\'"+ dish.RecipeID +"\'>" +
+		                       "<div class=\'selectDish\' id=\'"+ dish.RecipeID +"\'>" +
 		                       "<div class=\" dish\" id=\'dishID\' > " +
 							      "<center>" + "<img src=\'" + dish.ImageURL + "\'></center> " +
 							      " <div class=\"dishname\">" + dish.Title + "</div>" +
-							   "</div></a>" + 
+							   "</div></div>" + 
 							   "<div class=\"description\"> " + dish.Description + "</div>" +
 					      "</div>";
-					     
+	    
+					      // console.log($(".selectDish").attr('id'));
+
+
 		} else if (args == "dishType" || args == "filter") {
         	alldishesHtml = ""; // Clear the Html
         	var dishType = model.getSelectedDish();
@@ -48,6 +41,32 @@ var ListDishesView = function (container, model){
 
 		this.listAllDishes.html(alldishesHtml);
 
+
+		//controller for selectDishView
+	 	$(".selectDish").on("click",function(){
+
+	    // var value = [];
+	    // var selectClass = $(".selectDish");
+	    var id = $(this).attr('id');
+		// console.log("ListDishesView" + id);	//right id
+		model.getDish(id);
+	    model.setDishID(id);
+	    // model.addDishToPendingMenu(id);//add pending to dinnerMenuView
+	    $(".confirm").attr('id',id);
+	    $(".backToMenu").attr('id',id);//add id to backToMenu button, so if go back without adding, the dish won't be showed on menu
+	    $(this).attr("keyDetail",1);
+		
+		//show detial page, moved from index.html
+	    $("#startPage").hide();
+        $("#menuPage").show();
+	    $("#menuPage #dishMenu").hide();
+	    $("#menuPage #dishView").show();
+		$("#overviewPage").hide();
+		$("#printPage").hide();
+	    
+	    // console.log($(this).attr("keyDetail"));
+	  });
     }
+
 }
 

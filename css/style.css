@@ -115,16 +115,6 @@
     margin-bottom: 50px;
     }
 
-    .ingtable{
-        width: 100%;
-
-        border-bottom: 1px solid gray;
-    }
-
-    .ingtable tr td{
-        width: 15%;
-        padding:5px 0px;
-    }
 
 
 
@@ -135,17 +125,16 @@
 
 
     .dish2{
-        margin-left: 40px;
-        margin-top: 40px;
-        margin-right: 20px;
-        margin-bottom: 40px;
-        padding: 5px;
+        width: 45%;
+        margin: 40px;
+        padding: 5px 5px 50px 5px;
+        position: relative;
     }
 
     .dishimg{
         margin: 30px 5px 10px 5px;
-        width: 60%;
-        height: 100%;
+        width: 250px;
+        height: 250px;
     }
 
     .printImg{
@@ -157,7 +146,7 @@
 
     .dishimg img{
         width: 100%;
-        height: 100px;
+        height: 100%;
     }
     .dishtitle{
         width: 100%;
@@ -174,23 +163,47 @@
     }
 
     .ingredients{
-        margin-left: 35px;
+        position: relative;
+        margin-left: 5px;
         margin-bottom: 40px;
         margin-top: 40px;
-        margin-right: 10px;
+        margin-right: 5px;
         padding: 20px;
         background-color: rgb(249,229,156);
         border: 0.5px solid gray; 
 
     }
+
+    .ingtable{
+        width: 100%;
+        border-bottom: 1px solid gray;
+    }
+
+    .ingtable tr td{
+        width: 20%;
+        padding:5px 5px;
+    }
+    .pre{
+        margin-left: 40px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        padding: 10px;
+    }
     .preparation{
         font-size: 30px; 
         font-style: bold; 
-        padding-left: 25px;
+        padding-bottom: 10px;
+
+    }
+
+    .dishIntroduction{
+
     }
     .backToMenu{
         width:200px;
         margin: 5px;
+        position: absolute;
+        bottom: 5px;
     }
 
 

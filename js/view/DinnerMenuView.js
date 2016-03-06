@@ -10,14 +10,14 @@ var DinnerMenuView = function(container,model){
 					"<td>0</td>" +
 				"</tr>" ;
 
-    this.price.html(totalPrice);
+    this.price.html(totalPrice);//where?
 	this.dinnerMenu.html(menuList);
 
 	this.update = function(args){
 
 		var keyDetail = $(".selectDish").attr("keyDetail");//check where it is, List or Detail
 
-		// console.log(keyDetail);
+
 		if (args == "addMenu" ||(args =="people" && keyDetail == 0) || (args == "removeDish" && keyDetail == 0)||args == "backToMenu") {
 
 			//this.dinnerMenu = container.find("#dinnerMenu");
@@ -26,8 +26,8 @@ var DinnerMenuView = function(container,model){
 			var menuList = "";
 
 			for (var i = 0; i < menu.length; i++) {
-	   		 var id = menu[i].id;
-	    	 var name = menu[i].name;
+	   		 var id = menu[i].RecipeID;
+	    	 var name = menu[i].Title;
 	    	 var price = model.getTotalDishPrice(id);
 	    	 var totalPrice = model.getTotalMenuPrice();
 	    
@@ -40,9 +40,10 @@ var DinnerMenuView = function(container,model){
 			};
 
         this.price.html(model.getTotalMenuPrice());
-
-
 		this.dinnerMenu.html(menuList);
+
+
+		//remove listener
 		$(".removeDish").click(removeDishFunction);
 
 		}else if (args == "addPending" || (args =="people" && keyDetail == 1)||(args == "removeDish" && keyDetail == 1) ) {

@@ -16,9 +16,11 @@ var ListDishesView = function (container, model){
 		if (args == "dish") {
 
 			dish = model.dish;
+
 			dishes = model.dishes;
 
 			 alldishesHtml +=  "<div class=\"col-xs-3 dishbox\">" + 
+			 				   // "<a href=\'#\' class=\'selectDish\' id=\'"+ dish.RecipeID +"\'>" +
 		                       "<div class=\'selectDish\' id=\'"+ dish.RecipeID +"\'>" +
 		                       "<div class=\" dish\" id=\'dishID\' > " +
 							      "<center>" + "<img src=\'" + dish.ImageURL + "\'></center> " +

@@ -226,20 +226,20 @@ var DinnerModel = function() {
 		// var selectDish = this.getDish(id);//get all the info of the dish
 		var selectDishType = dish.Category;
 		// console.log("showing all the dishes got:     "+th.dishes);
-		console.log("before if:     "+menu);
+		//console.log("before if:     "+menu);
 		var theSameType = -1;
 
 		if (menu.length == 0) {
 			//if there is nothing in the menu, add directly
 			menu.push(id); 
-			console.log("if:     "+menu);
+			//console.log("if:     "+menu);
 		} else{
 
 			for (var i = 0; i< menu.length; i++) {
 			//if there is the same type in the menu, assign the value of the theSameType with the array index
-				console.log("menu.length>0:     "+ menu[i]);
+				//console.log("menu.length>0:     "+ menu[i]);
 				var dishInMenu = this.getLocalDish(menu[i]);//此时getDish的值已经是新值了
-				console.log("the first dish in menu:     "+ dishInMenu);
+				//console.log("the first dish in menu:     "+ dishInMenu);
 				var dishInMenuType = dishInMenu.Category;
 				if (dishInMenuType == selectDishType) {
 					theSameType = i				
@@ -250,7 +250,7 @@ var DinnerModel = function() {
 			}else{
 				// console.log(theSameType);
 				menu.push(id); 
-				console.log("addmenu:     "+menu);//add to menu ok
+				//console.log("addmenu:     "+menu);//add to menu ok
 			};
 		};
 		this.notify("addMenu");
@@ -320,7 +320,7 @@ var DinnerModel = function() {
 			}
 		};
 
-		console.log("ok");
+		//console.log("ok");
 		// console.log(pendingmenu);
 		return pendingmenu;
 	}
@@ -335,11 +335,11 @@ var DinnerModel = function() {
 				menu.splice(i,1);
 			};
 		};
-		console.log(menu);
-		console.log(pendingmenu);
+		//console.log(menu);
+		//console.log(pendingmenu);
 		this.syncPendingMenu();
-		console.log(menu);
-		console.log(pendingmenu);
+		//console.log(menu);
+		//console.log(pendingmenu);
 		this.notify("removeDish");
 
 	}
@@ -423,9 +423,8 @@ var DinnerModel = function() {
 							}
 		         		});
 			           };
-
-			         
 					}
+
          		});	
     }
 
@@ -440,7 +439,7 @@ var DinnerModel = function() {
 
 	this.getDish = function(id){
 		var recipeID = id;
-		console.log(id);
+		//console.log(id);
 		// var thisDish = [];
 		var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key="+apiKey;
 		$.ajax({
@@ -714,4 +713,6 @@ var DinnerModel = function() {
 // 		}
 // 	];
 
+
 // }
+

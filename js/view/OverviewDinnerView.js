@@ -18,16 +18,18 @@ var OverviewDinnerView = function (container, model){
     		//this.totalPrice.html(model.getTotalMenuPrice());
 			var selectDishes = "";
 			var fullMenu = model.getFullMenu();
+			// console.log(totalPrice);
+			 console.log(fullMenu);
 
 
 			for (var i = 0; i < fullMenu.length; i++) {
-		    var dishID = fullMenu[i].id;
+		    var dishID = fullMenu[i].RecipeID;
 			var dishPrice = model.getTotalDishPrice(dishID);
 
 			selectDishes += "<div class=\"col-xs-2 col-xs-offset-0\">" +
 						    "<div class=\"dish\">" +
-						    "<div><img src=\'images/" + fullMenu[i].image + "\' ></div>" +
-						    "<div class=\"dishname\">" + fullMenu[i].name + "</div>" +
+						    "<div><img src=\'" + fullMenu[i].ImageURL + "\'></div>" +
+						    "<div class=\"dishname\">" + fullMenu[i].Title + "</div>" +
 						    "</div>" +
 						    "<div class= \"price\"> " +
 							dishPrice + " SEK" +

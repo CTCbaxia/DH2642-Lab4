@@ -4,7 +4,7 @@ var DinnerMenuView = function(container,model){
 	this.price = container.find("#totalPrice")
 	var menu = model.getFullMenu();
 	var menuList = "";
-
+	var keyDetail = 0;
     menuList += "<tr>" +
 					"<td>pending</td>" +						
 					"<td>0</td>" +
@@ -15,7 +15,7 @@ var DinnerMenuView = function(container,model){
 
 	this.update = function(args){
 
-		var keyDetail = $(".selectDish").attr("keyDetail");//check where it is, List or Detail
+		keyDetail = $(".selectDish").attr("keyDetail");//check where it is, List or Detail
 
 
 		if (args == "addMenu" ||(args =="people" && keyDetail == 0) || (args == "removeDish" && keyDetail == 0)||args == "backToMenu") {
@@ -34,27 +34,35 @@ var DinnerMenuView = function(container,model){
         menuList += "<tr>" +
 						"<td>"+ name +"</td>" +
 						"<td style=\"text-align:right;\">" + price + "</td>" +
-						"<td>" + "<span class = \"glyphicon glyphicon-remove removeDish\" id="+ menu[i].id +"></span>" +"</td>" +//每列添加了button
+						"<td>" + "<span class = \"glyphicon glyphicon-remove removeDish\" id="+ menu[i].RecipeID +"></span>" +"</td>" +//每列添加了button
 
 					"</tr>" ;
 			};
 
         this.price.html(model.getTotalMenuPrice());
 		this.dinnerMenu.html(menuList);
-
-
+		console.log("hello~~~");
 		//remove listener
 		$(".removeDish").click(removeDishFunction);
+
+
+		// $(".removeDish").on("click",function(){
+		// 	var id = $(this).attr('id');
+		// 	model.removeDishFromMenu(id);
+
+		//  console.log("removeDish: "+id);
+		//  });
+
+	    //new for lab4
 
 		}else if (args == "addPending" || (args =="people" && keyDetail == 1)||(args == "removeDish" && keyDetail == 1) ) {
 			//this.dinnerMenu = container.find("#dinnerMenu");
 
 			var menu = model.getFullPendingMenu();
-			console.log("DinnerMenuView-pendingmenu:    "+menu);
 			var menuList = "";
+
 			for (var i = 0; i < menu.length-1; i++) {
 	   		 var id = menu[i].RecipeID;
-	   		 console.log("DinnerMenuView-dishInPending:      "+i+id);
 	    	 var name = menu[i].Title;
 	    	 var price = model.getTotalDishPrice(id);
 	    	 
@@ -62,7 +70,7 @@ var DinnerMenuView = function(container,model){
        		 menuList += "<tr>" +
 							"<td>"+ name +"</td>" +
 							"<td style=\"text-align:right;\">" + price + "</td>" +
-							"<td>" + "<span class = \"glyphicon glyphicon-remove removeDish\" id="+ menu[i].id +"></span>" +"</td>" +
+							"<td>" + "<span class = \"glyphicon glyphicon-remove removeDish\" id="+ menu[i].RecipeID +"></span>" +"</td>" +
 						"</tr>" ;
 			};
 			var index = menu.length-1;
@@ -78,7 +86,7 @@ var DinnerMenuView = function(container,model){
 
 			var totalPrice = model.getTotalPendingPrice();
         	this.price.html(totalPrice);
-
+        	console.log("keyDetail-pendingmenu:     " + keyDetail);
 	
 		 //    $(".removeDish").on("click",function(){
 		 //    var id = $(this).attr('id');
@@ -88,6 +96,13 @@ var DinnerMenuView = function(container,model){
 			
 		this.dinnerMenu.html(menuList);
 		$(".removeDish").click(removeDishFunction);
+
+			// $(".removeDish").on("click",function(){
+			// 	var id = $(this).attr('id');
+			// 	model.removeDishFromMenu(id);
+
+		 //    console.log("removeDish: "+id);
+		 //    });
 
 		};
 

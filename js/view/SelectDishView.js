@@ -11,6 +11,9 @@ var SelectDishView = function (container, model){
 			dishID = model.getDishID();
 			dish = model.getLocalDish(dishID);
 
+			//marked as at detail page
+			$(".selectDish").attr("keyDetail",1);//have to be defined again here
+
 			//get the dish name
 			this.dishName = container.find("#dishName");
 			var dishName = dish.Title;
@@ -67,7 +70,8 @@ var SelectDishView = function (container, model){
 						"<td> " + totalPrice + " </td>" +
 					 "</tr></br>";
 			this.dishPrice.html(printPrice);
-		
+
+			console.log("SelectDishView-keyDetail:        "+$(".selectDish").attr("keyDetail"));
 		// }else if(args == "people"){
 
 		// 	//get the number of guest

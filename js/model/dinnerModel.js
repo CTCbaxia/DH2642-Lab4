@@ -44,8 +44,7 @@ var DinnerModel = function() {
 		}else{
 			numberOfGuests = num;
 		};
-		//to check where is it
-		//console.log($(".selectDish").attr("keyDetail"));
+
 		this.notify("people");
 	    
 	}
@@ -238,16 +237,16 @@ var DinnerModel = function() {
 		var selectDish = this.getLocalDish(id);//get all the info of the dish
 		var selectDishType = selectDish.Category;
 		var theSameType = -1;
+		pendingmenu = [];
 
 		for(var i = 0; i< menu.length; i++) {
 			pendingmenu[i] = menu[i];
 		};
-
-
+		
 		if (pendingmenu.length == 0) {
 
 			pendingmenu.push(id); 
-			console.log("addDishToPendingMenu"+pendingmenu);
+			// console.log("addDishToPendingMenu"+pendingmenu);
 
 		} else{
 			for (var i = 0; i< pendingmenu.length; i++) {
@@ -266,7 +265,7 @@ var DinnerModel = function() {
 				pendingmenu.push(id); 
 			};
 		};
-
+		$(".selectDish").attr("keyDetail",1);
 		this.notify("addPending");
 	}
 	
@@ -289,20 +288,35 @@ var DinnerModel = function() {
 
 	//Removes dish from menu
 	this.removeDishFromMenu = function(id) {
+		console.log(id);
 		for (var i = 0; i< menu.length; i++) {
 			if (menu[i] == id) {
 				// console.log(menu[i]);
 				menu.splice(i,1);
 			};
 		};
-		//console.log(menu);
-		//console.log(pendingmenu);
+
 		this.syncPendingMenu();
-		//console.log(menu);
-		//console.log(pendingmenu);
 		this.notify("removeDish");
 
 	}
+
+	this.syncPendingMenu = function(){
+		var lastelement = pendingmenu.length - 1;
+		if(menu.length == 0){
+					pendingmenu.splice(i,1);
+		}else{
+		for(var i = 0; i< menu.length; i++) {
+				pendingmenu[i] = menu[i];
+				pendingmenu.splice(lastelement,1);
+			}
+		};
+
+		console.log("ok");
+		// console.log(pendingmenu);
+		return pendingmenu;
+	}
+
 	// from pending back to DishListView
 	// this.pendingBackToList = function(id) {
 	// 	if ($(".backToMenu").attr("key") ==1) {
@@ -330,9 +344,9 @@ var DinnerModel = function() {
 	//you can use the filter argument to filter out the dish by name or ingredient (use for search)
 	//if you don't pass any filter all the dishes will be returned
 	var th = this;
-	 var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
+	 //var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
 	 // var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
-     //var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
+     var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
 	// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
 	// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
 	// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";

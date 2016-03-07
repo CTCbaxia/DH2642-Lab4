@@ -223,23 +223,19 @@ var DinnerModel = function() {
 	this.addDishToMenu = function(id) {
 		//TODO Lab 2 
 		var dish = this.dish;
-		// var selectDish = this.getDish(id);//get all the info of the dish
+
 		var selectDishType = dish.Category;
-		// console.log("showing all the dishes got:     "+th.dishes);
-		//console.log("before if:     "+menu);
+
 		var theSameType = -1;
 
 		if (menu.length == 0) {
 			//if there is nothing in the menu, add directly
 			menu.push(id); 
-			//console.log("if:     "+menu);
 		} else{
 
 			for (var i = 0; i< menu.length; i++) {
 			//if there is the same type in the menu, assign the value of the theSameType with the array index
-				//console.log("menu.length>0:     "+ menu[i]);
-				var dishInMenu = this.getLocalDish(menu[i]);//此时getDish的值已经是新值了
-				//console.log("the first dish in menu:     "+ dishInMenu);
+				var dishInMenu = this.getLocalDish(menu[i]);
 				var dishInMenuType = dishInMenu.Category;
 				if (dishInMenuType == selectDishType) {
 					theSameType = i				
@@ -248,9 +244,7 @@ var DinnerModel = function() {
 			if (theSameType != -1) {
 				menu[theSameType] = id;
 			}else{
-				// console.log(theSameType);
 				menu.push(id); 
-				//console.log("addmenu:     "+menu);//add to menu ok
 			};
 		};
 		this.notify("addMenu");
@@ -262,7 +256,6 @@ var DinnerModel = function() {
 
 	  	for(key in localDishes){
 			if(localDishes[key].RecipeID == id) {
-				// console.log("getLocalDish:    "+localDishes[key].RecipeID);
 				return localDishes[key];
 			}
 		}
@@ -462,4 +455,3 @@ var DinnerModel = function() {
 
 }
     
-

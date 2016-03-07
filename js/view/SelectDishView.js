@@ -5,7 +5,7 @@ var SelectDishView = function (container, model){
 	// var dishes = [];
 
 	this.update = function(args){
-		if(args == "select"){
+		if(args == "select"||args == "people"){
 
 			//get the dish
 			dish = model.dish;

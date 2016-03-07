@@ -7,18 +7,25 @@ var SelectDishViewController = function(view, model){
   var id;
   $(".confirm").on("click",function(){  
     id = $(this).attr('id');
-    // console.log(id);//right id
-    $(".backToMenu").attr("key",1);//marked as 1 if the dish is added
+    // $(".backToMenu").attr("key",1);//marked as 1 if the dish is added
     model.addDishToMenu(id);
 
     $(".selectDish").attr("keyDetail",0);
     //console.log($(".selectDish").attr("keyDetail"));
   });
   //click backToMenu without dish showing in the menu
-  $(".backToMenu").on("click",function(){  
-  	id = $(this).attr('id');
-  	model.pendingBackToList(id);
-    $(".selectDish").attr("keyDetail",0);
-    //console.log($(".selectDish").attr("keyDetail"));
+  // $(".backToMenu").on("click",function(){  
+  // 	id = $(this).attr('id');
+  // 	model.pendingBackToList(id);
+  //   $(".selectDish").attr("keyDetail",0);
+  //   //console.log($(".selectDish").attr("keyDetail"));
+  // });
+
+
+    $(".backToMenu").on("click",function(){  
+      model.notify("backToMenu");
+      $(".selectDish").attr("keyDetail",0);
+
   });
+
 }

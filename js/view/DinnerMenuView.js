@@ -50,11 +50,11 @@ var DinnerMenuView = function(container,model){
 			//this.dinnerMenu = container.find("#dinnerMenu");
 
 			var menu = model.getFullPendingMenu();
-			console.log("DinnerMenuView:    "+menu);
+			console.log("DinnerMenuView-pendingmenu:    "+menu);
 			var menuList = "";
 			for (var i = 0; i < menu.length-1; i++) {
 	   		 var id = menu[i].RecipeID;
-	   		 console.log("DinnerMenuView:      "+id);
+	   		 console.log("DinnerMenuView-dishInPending:      "+i+id);
 	    	 var name = menu[i].Title;
 	    	 var price = model.getTotalDishPrice(id);
 	    	 

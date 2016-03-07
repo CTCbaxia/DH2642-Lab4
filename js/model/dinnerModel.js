@@ -165,7 +165,6 @@ var DinnerModel = function() {
 		var guestNum = this.getNumberOfGuests();
 		var totalPrice = 0;
 
-		console.log("getTotalDishPrice    " + id + dish);
 		var dishIngre = dish.Ingredients;
 		for (var i = 0; i < dishIngre.length; i++) {
 			totalPrice += dishIngre[i].Quantity * guestNum;
@@ -220,37 +219,6 @@ var DinnerModel = function() {
         return totalPendingPrice;
 	}
 
-	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
-	//it is removed from the menu and the new one added.
-	this.addDishToMenu = function(id) {
-		//TODO Lab 2 
-		var dish = this.dish;
-
-		var selectDishType = dish.Category;
-
-		var theSameType = -1;
-
-		if (menu.length == 0) {
-			//if there is nothing in the menu, add directly
-			menu.push(id); 
-		} else{
-
-			for (var i = 0; i< menu.length; i++) {
-			//if there is the same type in the menu, assign the value of the theSameType with the array index
-				var dishInMenu = this.getLocalDish(menu[i]);
-				var dishInMenuType = dishInMenu.Category;
-				if (dishInMenuType == selectDishType) {
-					theSameType = i				
-				};
-			};
-			if (theSameType != -1) {
-				menu[theSameType] = id;
-			}else{
-				menu.push(id); 
-			};
-		};
-		this.notify("addMenu");
-	}
 
 	this.getLocalDish = function(id){
 		var localDishes = [];
@@ -302,23 +270,22 @@ var DinnerModel = function() {
 		this.notify("addPending");
 	}
 	
-	this.syncPendingMenu = function(){
-		var lastelement = pendingmenu.length - 1;
-		if(menu.length == 0){
-					pendingmenu.splice(i,1);
-		}else{
-		for(var i = 0; i< menu.length; i++) {
-				pendingmenu[i] = menu[i];
-				pendingmenu.splice(lastelement,1);
-			}
+
+	
+	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
+	//it is removed from the menu and the new one added.
+	this.addDishToMenu = function(id) {
+		//TODO Lab 2 
+		//sync menu as pending menu
+		for(var i = 0; i< pendingmenu.length; i++) {
+			menu[i] = pendingmenu[i];
 		};
 
-		//console.log("ok");
-		// console.log(pendingmenu);
-		return pendingmenu;
+		this.notify("addMenu");
 	}
 
-       
+
+
 
 	//Removes dish from menu
 	this.removeDishFromMenu = function(id) {
@@ -337,27 +304,27 @@ var DinnerModel = function() {
 
 	}
 	// from pending back to DishListView
-	this.pendingBackToList = function(id) {
-		if ($(".backToMenu").attr("key") ==1) {
-			this.notify("addMenu")
+	// this.pendingBackToList = function(id) {
+	// 	if ($(".backToMenu").attr("key") ==1) {
+	// 		this.notify("addMenu")
 
-		} else{
-			//似乎是没有用
-			// for (var i = 0; i< pendingmenu.length; i++) {
-			// 	if (pendingmenu[i] == id) {
-			// 		pendingmenu.splice(i,1);
-			// 	};
-			// };
-			this.notify("backToMenu");
+	// 	} else{
+	// 		//似乎是没有用
+	// 		// for (var i = 0; i< pendingmenu.length; i++) {
+	// 		// 	if (pendingmenu[i] == id) {
+	// 		// 		pendingmenu.splice(i,1);
+	// 		// 	};
+	// 		// };
+	// 		this.notify("backToMenu");
 
-		};
+	// 	};
 
-		$(".backToMenu").attr("key",0);//default as 0
-		// console.log(menu);
-		// console.log(pendingmenu);
+	// 	$(".backToMenu").attr("key",0);//default as 0
+	// 	// console.log(menu);
+	// 	// console.log(pendingmenu);
 
 
-	}
+	// }
 
 	//function that returns all dishes of specific type (i.e. "starter", "main dish" or "dessert")
 	//you can use the filter argument to filter out the dish by name or ingredient (use for search)

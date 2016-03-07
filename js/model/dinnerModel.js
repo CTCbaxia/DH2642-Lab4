@@ -44,8 +44,7 @@ var DinnerModel = function() {
 		}else{
 			numberOfGuests = num;
 		};
-		//to check where is it
-		//console.log($(".selectDish").attr("keyDetail"));
+
 		this.notify("people");
 	    
 	}
@@ -80,7 +79,7 @@ var DinnerModel = function() {
 	this.setDishID = function(id){
         dishID = id;
         // console.log("setDish id "+ dishID);
-        // this.notify("dishDetail");
+        this.notify("dishDetail");
 	}
 
 	this.getDishID = function(){
@@ -114,7 +113,7 @@ var DinnerModel = function() {
 		//TODO Lab 2
 		var dishesOnPendingMenu = [];
 		for (var i = 0; i < pendingmenu.length; i++) {
-			dishesOnPendingMenu.push(this.getDish(pendingmenu[i]));
+			dishesOnPendingMenu.push(this.getLocalDish(pendingmenu[i]));
 		};
         return dishesOnPendingMenu;
 
@@ -163,8 +162,9 @@ var DinnerModel = function() {
 	this.getTotalDishPrice = function(id){
 		var dish = this.getLocalDish(id);
 		var guestNum = this.getNumberOfGuests();
-		var dishIngre = dish.Ingredients;
 		var totalPrice = 0;
+
+		var dishIngre = dish.Ingredients;
 		for (var i = 0; i < dishIngre.length; i++) {
 			totalPrice += dishIngre[i].Quantity * guestNum;
 		};
@@ -214,41 +214,10 @@ var DinnerModel = function() {
         for (var i = 0; i < pendingmenu.length; i++){
         	totalPendingPrice += this.getTotalDishPrice(pendingmenu[i]);
         }
-       
+       	totalPendingPrice = parseFloat(totalPendingPrice.toFixed(2));
         return totalPendingPrice;
 	}
 
-	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
-	//it is removed from the menu and the new one added.
-	this.addDishToMenu = function(id) {
-		//TODO Lab 2 
-		var dish = this.dish;
-
-		var selectDishType = dish.Category;
-
-		var theSameType = -1;
-
-		if (menu.length == 0) {
-			//if there is nothing in the menu, add directly
-			menu.push(id); 
-		} else{
-
-			for (var i = 0; i< menu.length; i++) {
-			//if there is the same type in the menu, assign the value of the theSameType with the array index
-				var dishInMenu = this.getLocalDish(menu[i]);
-				var dishInMenuType = dishInMenu.Category;
-				if (dishInMenuType == selectDishType) {
-					theSameType = i				
-				};
-			};
-			if (theSameType != -1) {
-				menu[theSameType] = id;
-			}else{
-				menu.push(id); 
-			};
-		};
-		this.notify("addMenu");
-	}
 
 	this.getLocalDish = function(id){
 		var localDishes = [];
@@ -265,26 +234,25 @@ var DinnerModel = function() {
 	//add pending to the menu
 	this.addDishToPendingMenu = function(id) {
 		//TODO Lab 2 
-		var selectDish = this.getDish(id);//get all the info of the dish
-		var selectDishType = selectDish.type;
+		var selectDish = this.getLocalDish(id);//get all the info of the dish
+		var selectDishType = selectDish.Category;
 		var theSameType = -1;
-		
+		pendingmenu = [];
+
 		for(var i = 0; i< menu.length; i++) {
 			pendingmenu[i] = menu[i];
 		};
-		// pendingmenu = menu;
-
-
+		
 		if (pendingmenu.length == 0) {
-			//if there is nothing in the menu, add directly
+
 			pendingmenu.push(id); 
-			// console.log(pendingmenu);
+			// console.log("addDishToPendingMenu"+pendingmenu);
 
 		} else{
 			for (var i = 0; i< pendingmenu.length; i++) {
 			//if there is the same type in the menu, assign the value of the theSameType with the array index
-				var dishInMenu = this.getDish(pendingmenu[i]);
-				var dishInMenuType = dishInMenu.type;
+				var dishInMenu = this.getLocalDish(pendingmenu[i]);
+				var dishInMenuType = dishInMenu.Category;
 				if (dishInMenuType == selectDishType) {
 					theSameType = i				
 				};
@@ -294,14 +262,45 @@ var DinnerModel = function() {
 				pendingmenu.splice(theSameType,1);
 				pendingmenu.push(id); 
 			}else{
-				// console.log(theSameType);
 				pendingmenu.push(id); 
 			};
 		};
-
+		$(".selectDish").attr("keyDetail",1);
 		this.notify("addPending");
 	}
 	
+
+	
+	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
+	//it is removed from the menu and the new one added.
+	this.addDishToMenu = function(id) {
+		//TODO Lab 2 
+		//sync menu as pending menu
+		for(var i = 0; i< pendingmenu.length; i++) {
+			menu[i] = pendingmenu[i];
+		};
+
+		this.notify("addMenu");
+	}
+
+
+
+
+	//Removes dish from menu
+	this.removeDishFromMenu = function(id) {
+		console.log(id);
+		for (var i = 0; i< menu.length; i++) {
+			if (menu[i] == id) {
+				// console.log(menu[i]);
+				menu.splice(i,1);
+			};
+		};
+
+		this.syncPendingMenu();
+		this.notify("removeDish");
+
+	}
+
 	this.syncPendingMenu = function(){
 		var lastelement = pendingmenu.length - 1;
 		if(menu.length == 0){
@@ -313,59 +312,41 @@ var DinnerModel = function() {
 			}
 		};
 
-		//console.log("ok");
+		console.log("ok");
 		// console.log(pendingmenu);
 		return pendingmenu;
 	}
 
-       
-
-	//Removes dish from menu
-	this.removeDishFromMenu = function(id) {
-		for (var i = 0; i< menu.length; i++) {
-			if (menu[i] == id) {
-				// console.log(menu[i]);
-				menu.splice(i,1);
-			};
-		};
-		//console.log(menu);
-		//console.log(pendingmenu);
-		this.syncPendingMenu();
-		//console.log(menu);
-		//console.log(pendingmenu);
-		this.notify("removeDish");
-
-	}
 	// from pending back to DishListView
-	this.pendingBackToList = function(id) {
-		if ($(".backToMenu").attr("key") ==1) {
-			this.notify("addMenu")
+	// this.pendingBackToList = function(id) {
+	// 	if ($(".backToMenu").attr("key") ==1) {
+	// 		this.notify("addMenu")
 
-		} else{
-			//似乎是没有用
-			// for (var i = 0; i< pendingmenu.length; i++) {
-			// 	if (pendingmenu[i] == id) {
-			// 		pendingmenu.splice(i,1);
-			// 	};
-			// };
-			this.notify("backToMenu");
+	// 	} else{
+	// 		//似乎是没有用
+	// 		// for (var i = 0; i< pendingmenu.length; i++) {
+	// 		// 	if (pendingmenu[i] == id) {
+	// 		// 		pendingmenu.splice(i,1);
+	// 		// 	};
+	// 		// };
+	// 		this.notify("backToMenu");
 
-		};
+	// 	};
 
-		$(".backToMenu").attr("key",0);//default as 0
-		// console.log(menu);
-		// console.log(pendingmenu);
+	// 	$(".backToMenu").attr("key",0);//default as 0
+	// 	// console.log(menu);
+	// 	// console.log(pendingmenu);
 
 
-	}
+	// }
 
 	//function that returns all dishes of specific type (i.e. "starter", "main dish" or "dessert")
 	//you can use the filter argument to filter out the dish by name or ingredient (use for search)
 	//if you don't pass any filter all the dishes will be returned
 	var th = this;
-	 var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
+	 //var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
 	 // var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
-     //var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
+     var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
 	// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
 	// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
 	// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
@@ -430,27 +411,27 @@ var DinnerModel = function() {
 	// 	}
 	// }
 
-	this.getDish = function(id){
-		var recipeID = id;
-		//console.log(id);
-		// var thisDish = [];
-		var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key="+apiKey;
-		$.ajax({
-         type: "GET",
-         dataType: 'json',
-         cache: false,
-         url: url,
-         success: function (data) {
+	// this.getDish = function(id){
+	// 	var recipeID = id;
+	// 	//console.log(id);
+	// 	// var thisDish = [];
+	// 	var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key="+apiKey;
+	// 	$.ajax({
+ //         type: "GET",
+ //         dataType: 'json',
+ //         cache: false,
+ //         url: url,
+ //         success: function (data) {
  
-            // console.log(data);
-            th.dish = data;//undefined
+ //            // console.log(data);
+ //            th.dish = data;//undefined
 
-            th.notify("select");
-            }
-         });
-		return th.dish;
+ //            th.notify("select");
+ //            }
+ //         });
+	// 	return th.dish;
 
-    }
+ //    }
 
 
 }

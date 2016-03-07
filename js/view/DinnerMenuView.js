@@ -50,10 +50,12 @@ var DinnerMenuView = function(container,model){
 			//this.dinnerMenu = container.find("#dinnerMenu");
 
 			var menu = model.getFullPendingMenu();
+			console.log("DinnerMenuView:    "+menu);
 			var menuList = "";
 			for (var i = 0; i < menu.length-1; i++) {
-	   		 var id = menu[i].id;
-	    	 var name = menu[i].name;
+	   		 var id = menu[i].RecipeID;
+	   		 console.log("DinnerMenuView:      "+id);
+	    	 var name = menu[i].Title;
 	    	 var price = model.getTotalDishPrice(id);
 	    	 
 	    
@@ -64,7 +66,7 @@ var DinnerMenuView = function(container,model){
 						"</tr>" ;
 			};
 			var index = menu.length-1;
-			var pendingID = menu[index].id;
+			var pendingID = menu[index].RecipeID;
 			menuList += "<tr class = \" pending\">" +
 							"<td>"+ "pending" +"</td>" +
 							"<td style=\"text-align:right;\">" + model.getTotalDishPrice(pendingID) + "</td>" +
@@ -75,7 +77,6 @@ var DinnerMenuView = function(container,model){
 			
 
 			var totalPrice = model.getTotalPendingPrice();
-
         	this.price.html(totalPrice);
 
 	

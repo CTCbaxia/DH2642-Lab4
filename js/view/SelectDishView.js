@@ -1,15 +1,15 @@
 var SelectDishView = function (container, model){
 
 	model.attach(this);
+	var dishID;
 	var dish = [];
-	// var dishes = [];
 
 	this.update = function(args){
-		if(args == "select"||args == "people"){
+		if(args == "dishDetail"||args == "people"){
 
 			//get the dish
-			dish = model.dish;
-			// console.log(dish);//got the right dish
+			dishID = model.getDishID();
+			dish = model.getLocalDish(dishID);
 
 			//get the dish name
 			this.dishName = container.find("#dishName");
@@ -68,12 +68,12 @@ var SelectDishView = function (container, model){
 					 "</tr></br>";
 			this.dishPrice.html(printPrice);
 		
-		}else if(args == "people"){
+		// }else if(args == "people"){
 
-			//get the number of guest
-			this.numberOfPeople = container.find(".numberOfPeople");
-			var guestNum = model.getNumberOfGuests();
-			this.numberOfPeople.html(guestNum);
+		// 	//get the number of guest
+		// 	this.numberOfPeople = container.find(".numberOfPeople");
+		// 	var guestNum = model.getNumberOfGuests();
+		// 	this.numberOfPeople.html(guestNum);
 
 
 		};

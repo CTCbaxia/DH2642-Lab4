@@ -11,7 +11,6 @@ var GuestNumberView = function (container,model) {
  var number = model.getNumberOfGuests();
 
  this.numberOfGuests.html(number);
- console.log(numberOfGuests);
 
  this.update = function(args){
  	if (args == "people") {

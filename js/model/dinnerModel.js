@@ -44,8 +44,7 @@ var DinnerModel = function() {
 		}else{
 			numberOfGuests = num;
 		};
-		//to check where is it
-		//console.log($(".selectDish").attr("keyDetail"));
+
 		this.notify("people");
 	    
 	}
@@ -80,7 +79,7 @@ var DinnerModel = function() {
 	this.setDishID = function(id){
         dishID = id;
         // console.log("setDish id "+ dishID);
-        // this.notify("dishDetail");
+        this.notify("dishDetail");
 	}
 
 	this.getDishID = function(){
@@ -114,7 +113,7 @@ var DinnerModel = function() {
 		//TODO Lab 2
 		var dishesOnPendingMenu = [];
 		for (var i = 0; i < pendingmenu.length; i++) {
-			dishesOnPendingMenu.push(this.getDish(pendingmenu[i]));
+			dishesOnPendingMenu.push(this.getLocalDish(pendingmenu[i]));
 		};
         return dishesOnPendingMenu;
 
@@ -163,8 +162,9 @@ var DinnerModel = function() {
 	this.getTotalDishPrice = function(id){
 		var dish = this.getLocalDish(id);
 		var guestNum = this.getNumberOfGuests();
-		var dishIngre = dish.Ingredients;
 		var totalPrice = 0;
+
+		var dishIngre = dish.Ingredients;
 		for (var i = 0; i < dishIngre.length; i++) {
 			totalPrice += dishIngre[i].Quantity * guestNum;
 		};
@@ -214,47 +214,10 @@ var DinnerModel = function() {
         for (var i = 0; i < pendingmenu.length; i++){
         	totalPendingPrice += this.getTotalDishPrice(pendingmenu[i]);
         }
-       
+       	totalPendingPrice = parseFloat(totalPendingPrice.toFixed(2));
         return totalPendingPrice;
 	}
 
-	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
-	//it is removed from the menu and the new one added.
-	this.addDishToMenu = function(id) {
-		//TODO Lab 2 
-		var dish = this.dish;
-		// var selectDish = this.getDish(id);//get all the info of the dish
-		var selectDishType = dish.Category;
-		// console.log("showing all the dishes got:     "+th.dishes);
-		//console.log("before if:     "+menu);
-		var theSameType = -1;
-
-		if (menu.length == 0) {
-			//if there is nothing in the menu, add directly
-			menu.push(id); 
-			//console.log("if:     "+menu);
-		} else{
-
-			for (var i = 0; i< menu.length; i++) {
-			//if there is the same type in the menu, assign the value of the theSameType with the array index
-				//console.log("menu.length>0:     "+ menu[i]);
-				var dishInMenu = this.getLocalDish(menu[i]);//此时getDish的值已经是新值了
-				//console.log("the first dish in menu:     "+ dishInMenu);
-				var dishInMenuType = dishInMenu.Category;
-				if (dishInMenuType == selectDishType) {
-					theSameType = i				
-				};
-			};
-			if (theSameType != -1) {
-				menu[theSameType] = id;
-			}else{
-				// console.log(theSameType);
-				menu.push(id); 
-				//console.log("addmenu:     "+menu);//add to menu ok
-			};
-		};
-		this.notify("addMenu");
-	}
 
 	this.getLocalDish = function(id){
 		var localDishes = [];
@@ -262,7 +225,6 @@ var DinnerModel = function() {
 
 	  	for(key in localDishes){
 			if(localDishes[key].RecipeID == id) {
-				// console.log("getLocalDish:    "+localDishes[key].RecipeID);
 				return localDishes[key];
 			}
 		}
@@ -272,26 +234,25 @@ var DinnerModel = function() {
 	//add pending to the menu
 	this.addDishToPendingMenu = function(id) {
 		//TODO Lab 2 
-		var selectDish = this.getDish(id);//get all the info of the dish
-		var selectDishType = selectDish.type;
+		var selectDish = this.getLocalDish(id);//get all the info of the dish
+		var selectDishType = selectDish.Category;
 		var theSameType = -1;
-		
+		pendingmenu = [];
+
 		for(var i = 0; i< menu.length; i++) {
 			pendingmenu[i] = menu[i];
 		};
-		// pendingmenu = menu;
-
-
+		
 		if (pendingmenu.length == 0) {
-			//if there is nothing in the menu, add directly
+
 			pendingmenu.push(id); 
-			// console.log(pendingmenu);
+			// console.log("addDishToPendingMenu"+pendingmenu);
 
 		} else{
 			for (var i = 0; i< pendingmenu.length; i++) {
 			//if there is the same type in the menu, assign the value of the theSameType with the array index
-				var dishInMenu = this.getDish(pendingmenu[i]);
-				var dishInMenuType = dishInMenu.type;
+				var dishInMenu = this.getLocalDish(pendingmenu[i]);
+				var dishInMenuType = dishInMenu.Category;
 				if (dishInMenuType == selectDishType) {
 					theSameType = i				
 				};
@@ -301,14 +262,45 @@ var DinnerModel = function() {
 				pendingmenu.splice(theSameType,1);
 				pendingmenu.push(id); 
 			}else{
-				// console.log(theSameType);
 				pendingmenu.push(id); 
 			};
 		};
-
+		$(".selectDish").attr("keyDetail",1);
 		this.notify("addPending");
 	}
 	
+
+	
+	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
+	//it is removed from the menu and the new one added.
+	this.addDishToMenu = function(id) {
+		//TODO Lab 2 
+		//sync menu as pending menu
+		for(var i = 0; i< pendingmenu.length; i++) {
+			menu[i] = pendingmenu[i];
+		};
+
+		this.notify("addMenu");
+	}
+
+
+
+
+	//Removes dish from menu
+	this.removeDishFromMenu = function(id) {
+		console.log(id);
+		for (var i = 0; i< menu.length; i++) {
+			if (menu[i] == id) {
+				// console.log(menu[i]);
+				menu.splice(i,1);
+			};
+		};
+
+		this.syncPendingMenu();
+		this.notify("removeDish");
+
+	}
+
 	this.syncPendingMenu = function(){
 		var lastelement = pendingmenu.length - 1;
 		if(menu.length == 0){
@@ -320,59 +312,41 @@ var DinnerModel = function() {
 			}
 		};
 
-		//console.log("ok");
+		console.log("ok");
 		// console.log(pendingmenu);
 		return pendingmenu;
 	}
 
-       
-
-	//Removes dish from menu
-	this.removeDishFromMenu = function(id) {
-		for (var i = 0; i< menu.length; i++) {
-			if (menu[i] == id) {
-				// console.log(menu[i]);
-				menu.splice(i,1);
-			};
-		};
-		//console.log(menu);
-		//console.log(pendingmenu);
-		this.syncPendingMenu();
-		//console.log(menu);
-		//console.log(pendingmenu);
-		this.notify("removeDish");
-
-	}
 	// from pending back to DishListView
-	this.pendingBackToList = function(id) {
-		if ($(".backToMenu").attr("key") ==1) {
-			this.notify("addMenu")
+	// this.pendingBackToList = function(id) {
+	// 	if ($(".backToMenu").attr("key") ==1) {
+	// 		this.notify("addMenu")
 
-		} else{
-			//似乎是没有用
-			// for (var i = 0; i< pendingmenu.length; i++) {
-			// 	if (pendingmenu[i] == id) {
-			// 		pendingmenu.splice(i,1);
-			// 	};
-			// };
-			this.notify("backToMenu");
+	// 	} else{
+	// 		//似乎是没有用
+	// 		// for (var i = 0; i< pendingmenu.length; i++) {
+	// 		// 	if (pendingmenu[i] == id) {
+	// 		// 		pendingmenu.splice(i,1);
+	// 		// 	};
+	// 		// };
+	// 		this.notify("backToMenu");
 
-		};
+	// 	};
 
-		$(".backToMenu").attr("key",0);//default as 0
-		// console.log(menu);
-		// console.log(pendingmenu);
+	// 	$(".backToMenu").attr("key",0);//default as 0
+	// 	// console.log(menu);
+	// 	// console.log(pendingmenu);
 
 
-	}
+	// }
 
 	//function that returns all dishes of specific type (i.e. "starter", "main dish" or "dessert")
 	//you can use the filter argument to filter out the dish by name or ingredient (use for search)
 	//if you don't pass any filter all the dishes will be returned
 	var th = this;
-	// var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
-	 var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
-     //var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
+	 //var apiKey = "18f3cT02U9f6yRl3OKDpP8NA537kxYKu";
+	 // var apiKey = "XKEdN82lQn8x6Y5jm3K1ZX8L895WUoXN";
+     var apiKey = "3stL5NVP4s6ZkmK5gt4dci8a4zOQRpD4";
 	// var apiKey = "8vtk7KykflO5IzB96kb0mpot0sU40096";
 	// var apiKey = "1hg3g4Dkwr6pSt22n00EfS01rz568IR6";
 	// var apiKey = "r02x0R09O76JMCMc4nuM0PJXawUHpBUL";
@@ -437,282 +411,28 @@ var DinnerModel = function() {
 	// 	}
 	// }
 
-	this.getDish = function(id){
-		var recipeID = id;
-		//console.log(id);
-		// var thisDish = [];
-		var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key="+apiKey;
-		$.ajax({
-         type: "GET",
-         dataType: 'json',
-         cache: false,
-         url: url,
-         success: function (data) {
+	// this.getDish = function(id){
+	// 	var recipeID = id;
+	// 	//console.log(id);
+	// 	// var thisDish = [];
+	// 	var url = "http://api.bigoven.com/recipe/" + recipeID + "?api_key="+apiKey;
+	// 	$.ajax({
+ //         type: "GET",
+ //         dataType: 'json',
+ //         cache: false,
+ //         url: url,
+ //         success: function (data) {
  
-            // console.log(data);
-            th.dish = data;//undefined
+ //            // console.log(data);
+ //            th.dish = data;//undefined
 
-            th.notify("select");
-            }
-         });
-		return th.dish;
+ //            th.notify("select");
+ //            }
+ //         });
+	// 	return th.dish;
 
-    }
+ //    }
 
 
 }
     
-	// the dishes variable contains an array of all the 
-	// dishes in the database. each has id, name, type,
-	// image (name of the image file), description and
-	// array of ingredients. Each ingredient has name, 
-	// quantity (a number), price (a number) and unit (string 
-	// defining the unit i.e. "g", "slices", "ml". Unit
-	// can sometimes be empty like in the example of eggs where
-	// you just say "5 eggs" and not "5 pieces of eggs" or anything else.
-// 	var dishes = [{
-// 		'id':1,
-// 		'name':'French toast',
-// 		'type':'starter',
-// 		'image':'toast.jpg',
-// 		'description':"In a large mixing bowl, beat the eggs. Add the milk, brown sugar and nutmeg; stir well to combine. Soak bread slices in the egg mixture until saturated. Heat a lightly oiled griddle or frying pan over medium high heat. Brown slices on both sides, sprinkle with cinnamon and serve hot.",
-// 		'ingredients':[{ 
-// 			'name':'eggs',
-// 			'quantity':0.5,
-// 			'unit':'',
-// 			'price':10
-// 			},{
-// 			'name':'milk',
-// 			'quantity':30,
-// 			'unit':'ml',
-// 			'price':6
-// 			},{
-// 			'name':'brown sugar',
-// 			'quantity':7,
-// 			'unit':'g',
-// 			'price':1
-// 			},{
-// 			'name':'ground nutmeg',
-// 			'quantity':0.5,
-// 			'unit':'g',
-// 			'price':12
-// 			},{
-// 			'name':'white bread',
-// 			'quantity':2,
-// 			'unit':'slices',
-// 			'price':2
-// 			}]
-// 		},{
-// 		'id':2,
-// 		'name':'Sourdough Starter',
-// 		'type':'starter',
-// 		'image':'sourdough.jpg',
-// 		'c':"Here is how you make it... Lore ipsum...",
-// 		'ingredients':[{ 
-// 			'name':'active dry yeast',
-// 			'quantity':0.5,
-// 			'unit':'g',
-// 			'price':4
-// 			},{
-// 			'name':'warm water',
-// 			'quantity':30,
-// 			'unit':'ml',
-// 			'price':0
-// 			},{
-// 			'name':'all-purpose flour',
-// 			'quantity':15,
-// 			'unit':'g',
-// 			'price':2
-// 			}]
-// 		},{
-// 		'id':3,
-// 		'name':'Baked Brie with Peaches',
-// 		'type':'starter',
-// 		'image':'bakedbrie.jpg',
-// 		'description':"Here is how you make it... Lore ipsum...",
-// 		'ingredients':[{ 
-// 			'name':'round Brie cheese',
-// 			'quantity':10,
-// 			'unit':'g',
-// 			'price':8
-// 			},{
-// 			'name':'raspberry preserves',
-// 			'quantity':15,
-// 			'unit':'g',
-// 			'price':10
-// 			},{
-// 			'name':'peaches',
-// 			'quantity':1,
-// 			'unit':'',
-// 			'price':4
-// 			}]
-// 		},{
-// 		'id':100,
-// 		'name':'Meat balls',
-// 		'type':'main dish',
-// 		'image':'meatballs.jpg',
-// 		'description':"Preheat an oven to 400 degrees F (200 degrees C). Place the beef into a mixing bowl, and season with salt, onion, garlic salt, Italian seasoning, oregano, red pepper flakes, hot pepper sauce, and Worcestershire sauce; mix well. Add the milk, Parmesan cheese, and bread crumbs. Mix until evenly blended, then form into 1 1/2-inch meatballs, and place onto a baking sheet. Bake in the preheated oven until no longer pink in the center, 20 to 25 minutes.",
-// 		'ingredients':[{ 
-// 			'name':'extra lean ground beef',
-// 			'quantity':115,
-// 			'unit':'g',
-// 			'price':20
-// 			},{
-// 			'name':'sea salt',
-// 			'quantity':0.7,
-// 			'unit':'g',
-// 			'price':3
-// 			},{
-// 			'name':'small onion, diced',
-// 			'quantity':0.25,
-// 			'unit':'',
-// 			'price':2
-// 			},{
-// 			'name':'garlic salt',
-// 			'quantity':0.7,
-// 			'unit':'g',
-// 			'price':2
-// 			},{
-// 			'name':'Italian seasoning',
-// 			'quantity':0.6,
-// 			'unit':'g',
-// 			'price':3
-// 			},{
-// 			'name':'dried oregano',
-// 			'quantity':0.3,
-// 			'unit':'g',
-// 			'price':3
-// 			},{
-// 			'name':'crushed red pepper flakes',
-// 			'quantity':0.6,
-// 			'unit':'g',
-// 			'price':3
-// 			},{
-// 			'name':'Worcestershire sauce',
-// 			'quantity':6,
-// 			'unit':'ml',
-// 			'price':7
-// 			},{
-// 			'name':'milk',
-// 			'quantity':20,
-// 			'unit':'ml',
-// 			'price':4
-// 			},{
-// 			'name':'grated Parmesan cheese',
-// 			'quantity':5,
-// 			'unit':'g',
-// 			'price':8
-// 			},{
-// 			'name':'seasoned bread crumbs',
-// 			'quantity':15,
-// 			'unit':'g',
-// 			'price':4
-// 			}]
-// 		},{
-// 		'id':101,
-// 		'name':'MD 2',
-// 		'type':'main dish',
-// 		'image':'bakedbrie.jpg',
-// 		'description':"Here is how you make it... Lore ipsum...",
-// 		'ingredients':[{ 
-// 			'name':'ingredient 1',
-// 			'quantity':1,
-// 			'unit':'pieces',
-// 			'price':8
-// 			},{
-// 			'name':'ingredient 2',
-// 			'quantity':15,
-// 			'unit':'g',
-// 			'price':7
-// 			},{
-// 			'name':'ingredient 3',
-// 			'quantity':10,
-// 			'unit':'ml',
-// 			'price':4
-// 			}]
-// 		},{
-// 		'id':102,
-// 		'name':'MD 3',
-// 		'type':'main dish',
-// 		'image':'meatballs.jpg',
-// 		'description':"Here is how you make it... Lore ipsum...",
-// 		'ingredients':[{ 
-// 			'name':'ingredient 1',
-// 			'quantity':2,
-// 			'unit':'pieces',
-// 			'price':8
-// 			},{
-// 			'name':'ingredient 2',
-// 			'quantity':10,
-// 			'unit':'g',
-// 			'price':7
-// 			},{
-// 			'name':'ingredient 3',
-// 			'quantity':5,
-// 			'unit':'ml',
-// 			'price':4
-// 			}]
-// 		},{
-// 		'id':103,
-// 		'name':'MD 4',
-// 		'type':'main dish',
-// 		'image':'meatballs.jpg',
-// 		'description':"Here is how you make it... Lore ipsum...",
-// 		'ingredients':[{ 
-// 			'name':'ingredient 1',
-// 			'quantity':1,
-// 			'unit':'pieces',
-// 			'price':4
-// 			},{
-// 			'name':'ingredient 2',
-// 			'quantity':12,
-// 			'unit':'g',
-// 			'price':7
-// 			},{
-// 			'name':'ingredient 3',
-// 			'quantity':6,
-// 			'unit':'ml',
-// 			'price':4
-// 			}]
-// 		},{
-// 		'id':200,
-// 		'name':'Chocolat Ice cream',
-// 		'type':'dessert',
-// 		'image':'icecream.jpg',
-// 		'description':"Here is how you make it... Lore ipsum...",
-// 		'ingredients':[{ 
-// 			'name':'ice cream',
-// 			'quantity':100,
-// 			'unit':'ml',
-// 			'price':6
-// 			}]
-// 		},{
-// 		'id':201,
-// 		'name':'Vanilla Ice cream',
-// 		'type':'dessert',
-// 		'image':'icecream.jpg',
-// 		'description':"Here is how you make it... Lore ipsum...",
-// 		'ingredients':[{ 
-// 			'name':'ice cream',
-// 			'quantity':100,
-// 			'unit':'ml',
-// 			'price':6
-// 			}]
-// 		},{
-// 		'id':202,
-// 		'name':'Strawberry',
-// 		'type':'dessert',
-// 		'image':'icecream.jpg',
-// 		'description':"Here is how you make it... Lore ipsum...",
-// 		'ingredients':[{ 
-// 			'name':'ice cream',
-// 			'quantity':100,
-// 			'unit':'ml',
-// 			'price':6
-// 			}]
-// 		}
-// 	];
-
-
-// }
-
